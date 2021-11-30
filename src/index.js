@@ -1,7 +1,7 @@
 const express = require('express');
 const { v4: uuidV4 } = require('uuid');
 
-const customers = require('./mocks/customers');
+let customers = require('./mocks/customers');
 
 const app = express();
 
@@ -114,6 +114,14 @@ app.put('/account', verifyIfExistsAccountCPF, (request, response) => {
 app.get('/account', verifyIfExistsAccountCPF, (request, response) => {
   const { customer } = request;
   return response.json(customer);
+});
+
+app.delete('/account', verifyIfExistsAccountCPF, (request, response) => {
+  const { customer } = request;
+
+  customers.splice(customer, 1);
+
+  return response.status(200).json(customers);
 });
 
 app.listen(3000);
